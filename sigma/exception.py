@@ -1,8 +1,5 @@
-class SigmaException(Exception):
-	pass
-
-class CoreException(SigmaException):
+class Error(Exception):
     pass
 
-class GeometryException(SigmaException):
+class CoreError(Error):
     pass

@@ -1,4 +1,8 @@
-import sigma.main
+import argparse
+
+def main():
+    parser = argparse.ArgumentParser(description="Sigma")
+    #parser.add_argument(...)
 
 if __name__ == "__main__":
-  sigma.main.main()
+    main()
