@@ -1,4 +1,4 @@
-class IRepresentable(object):
+class IRepresentable:
 
     def __repr__(self): raise NotImplementedError
 
@@ -9,7 +9,7 @@ class IRepresentable(object):
     def __format__(self, format_spec=""): raise NotImplementedError
 
 
-class IComparable(object):
+class IComparable:
 
     def __lt__(self, other): raise NotImplementedError
 
@@ -26,12 +26,12 @@ class IComparable(object):
     def __bool__(self): raise NotImplementedError
 
 
-class IHashable(object):
+class IHashable:
 
     def __hash__(self): raise NotImplementedError
 
 
-class IBitwise(object):
+class IBitwise:
 
     def __lshift__(self, other): raise NotImplementedError
 
@@ -66,7 +66,7 @@ class IBitwise(object):
     def __invert__(self): raise NotImplementedError
 
 
-class IContainer(object):
+class IContainer:
 
     def __len__(self): raise NotImplementedError
 
@@ -85,10 +85,10 @@ class IContainer(object):
     def __contains__(self, value): raise NotImplementedError
 
 
-class IMapping(object): pass
+class IMapping: pass
 
 
-class ISequence(object):
+class ISequence:
 
     def append(self, value): raise NotImplementedError
 
@@ -125,7 +125,7 @@ class ISequence(object):
     def __imul__(self, other): raise NotImplementedError
 
 
-class INumeric(object):
+class INumeric:
 
     def __add__(self, other): raise NotImplementedError
 

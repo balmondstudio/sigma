@@ -4,7 +4,7 @@ import sigma.port
 import sigma.service
 
 
-class IInputAdapter(object):
+class IInputAdapter:
 
     def __init__(self):
         self._adaptee = self._create_adaptee()
@@ -19,6 +19,9 @@ class IInputAdapter(object):
 
 class TerminalInputAdapter(IInputAdapter, sigma.service.ITerminal):
 
+    def __init__(self):
+        super().__init__()
+
     def _create_adaptee(self):
         return sigma.core.Core()
 
@@ -31,6 +34,7 @@ class TerminalInputAdapter(IInputAdapter, sigma.service.ITerminal):
 class IOutputAdapter(sigma.port.IOutputPort):
 
     def __init__(self):
+        super().__init__()
         self._adaptee = self._create_adaptee()
         self._disassembler = self._create_disassembler()
 
@@ -45,6 +49,9 @@ class IOutputAdapter(sigma.port.IOutputPort):
 
 
 class TerminalInputAdapter(IOutputAdapter):
+
+    def __init__(self):
+        super().__init__()
 
     def _create_adaptee(self):
         return sigma.service.ITerminal

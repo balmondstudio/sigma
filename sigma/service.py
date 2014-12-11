@@ -1,32 +1,32 @@
 import config
 
 
-class ITerminal(object):
+class ITerminal:
 
     def __init__(self):
         self._argparse = __import__("argparse")
 
         self._parser = self._argparse.ArgumentParser(description="Sigma")
 
-        self._parser.add_argument("-m", "--modifier", 
-                nargs="+", 
+        self._parser.add_argument("-m", "--modifier",
+                nargs="+",
                 type=str,
-                choises=config.modifiers, 
+                choises=config.modifiers,
                 help="data modifier stack")
 
-        self._parser.add_argument("-f", "--filter", 
-                nargs="+", 
+        self._parser.add_argument("-f", "--filter",
+                nargs="+",
                 type=str,
-                choises=config.filters, 
+                choises=config.filters,
                 help="data filter stack")
 
-        self._parser.add_argument("-c", "--creator", 
+        self._parser.add_argument("-c", "--creator",
                 nargs=1,
                 type=str,
                 choices=config.creators,
                 help="creator on data")
 
-        self._parser.add_argument("-i", "--infile", 
+        self._parser.add_argument("-i", "--infile",
                 nargs="?",
                 default=config.data_filename,
                 type=argparse.FileType("r"),
@@ -35,25 +35,25 @@ class ITerminal(object):
         self._args = self._parser.parse_args()
 
 
-class IGUI(object):
+class IGUI:
     pass
 
 
-class IMatplotlib(object):
+class IMatplotlib:
     pass
 
 
-class IRhino(object):
+class IRhino:
     pass
 
 
-class IBlender(object):
+class IBlender:
     pass
 
 
-class IDatabase(object):
+class IDatabase:
     pass
 
 
-class IFilesystem(object):
+class IFilesystem:
     pass

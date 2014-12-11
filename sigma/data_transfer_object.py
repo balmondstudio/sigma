@@ -1,8 +1,8 @@
-class IDataTransferObject(object):
+class IDataTransferObject:
     pass
 
 
-class IDataTransferObjectAssembler(object):
+class IDataTransferObjectAssembler:
 
     def assemble(self):
         data_transfer_object = self.createDataTransferObject()
@@ -13,7 +13,7 @@ class IDataTransferObjectAssembler(object):
         raise NotImplementedError
 
 
-class IDataTransferObjectDisassembler(object):
+class IDataTransferObjectDisassembler:
 
     def disassemble(self, data_transfer_object):
         pass
