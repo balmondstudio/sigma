@@ -1,8 +1,11 @@
 import sigma.data_transfer_object
 import sigma.operator
 
+class Component(sigma.data_transfer_object.IDataTransferObject):
+    pass
 
-class Primitive(sigma.data_transfer_object.IDataTransferObject):
+
+class Primitive(Component):
 
     @property
     def relative_key(self):
@@ -34,10 +37,9 @@ class Primitive(sigma.data_transfer_object.IDataTransferObject):
         self._value = value
 
 
-class Composite(sigma.data_transfer_object.IDataTransferObject,
-        sigma.operator.IRepresentable, sigma.operator.IComparable,
-        sigma.operator.IBitwise, sigma.operator.IContainer,
-        sigma.operator.ISequence):
+class Composite(Component, sigma.operator.IRepresentable,
+        sigma.operator.IComparable, sigma.operator.IBitwise,
+        sigma.operator.IContainer, sigma.operator.ISequence):
 
     @property
     def primitives(self):

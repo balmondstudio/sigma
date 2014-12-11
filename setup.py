@@ -31,4 +31,7 @@ setup(
                 "sigma = sigma.__main__:main"
                 ],
             },
+        package_data = {
+            "sigma": ["data/*.dat"],
+            },
         )
