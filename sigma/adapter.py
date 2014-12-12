@@ -30,7 +30,8 @@ class TerminalInputAdapter(IInputAdapter, sigma.service.ITerminal):
 
     def execute(self):
         self._adaptee.execute(
-                self._assembler.assemble(raw_data),
+                self._args.outservice,
+                self._assembler.assemble(self._args.data),
                 self._args.modifiers,
                 self._args.filters,
                 self._args.creator

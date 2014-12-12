@@ -1,11 +1,14 @@
-import sigma.adapter
+import sigma.service
+
+
+class Terminal(sigma.service.ITerminal):
+
+    def execute(self):
+        print(self._args.infile.read())
 
 
 def main():
-    input_adapter = sigma.adapter.TerminalInputAdapter()
-    output_adapter = sigma.adapter.TemrinalOutputAdapter()
-
-    input_adapter.execute(output_adapter)
+    terminal = Terminal()
 
 
 if __name__ == "__main__":
