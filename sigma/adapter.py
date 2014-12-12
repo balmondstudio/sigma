@@ -26,16 +26,17 @@ class TerminalInputAdapter(IInputAdapter, sigma.service.ITerminal):
         return sigma.core.Core()
 
     def _create_assembler(self):
-        return sigma.data_tranfer_object.DataTransferObjectAssembler()
-
-    def execute(self):
-        self._adaptee.execute(
+        return sigma.data_tranfer_object.DataTransferObjectAssembler(
                 self._args.outservice,
-                self._assembler.assemble(self._args.data),
                 self._args.modifiers,
                 self._args.filters,
                 self._args.creator
                 )
+
+    def _execute(self):
+        raw_data = self._args.infile.read()
+        data_transfer_object = self._assembler.assemble(raw_data)
+        self._adaptee.execute(data_tranfer_object)
 
 
 class IOutputAdapter(sigma.port.IOutputPort):

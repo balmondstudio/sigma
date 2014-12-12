@@ -1,13 +1,13 @@
-import config
+import sigma.config
 
 
 class ITerminal:
 
     def __init__(self):
-        self._args = self.parse_args()
-        self.execute()
+        self._args = self._parse_args()
+        self._execute()
 
-    def parse_args(self):
+    def _parse_args(self):
         argparse = __import__("argparse")
 
         parser = argparse.ArgumentParser(description="Sigma")
@@ -15,24 +15,24 @@ class ITerminal:
         parser.add_argument("-m", "--modifier",
           nargs="+",
           type=str,
-          choices=config.modifiers,
+          choices=sigma.config.MODIFIERS,
           help="data modifier stack")
 
         parser.add_argument("-f", "--filter",
           nargs="+",
           type=str,
-          choices=config.filters,
+          choices=sigma.config.FILTERS,
           help="data filter stack")
 
         parser.add_argument("-c", "--creator",
           nargs=1,
           type=str,
-          choices=config.creators,
+          choices=sigma.config.CREATORS,
           help="creator on data")
 
         parser.add_argument("-i", "--infile",
           nargs="?",
-          default=config.data_filename,
+          default=sigma.config.DATA_FILENAME,
           type=argparse.FileType("r"),
           help="raw data file")
 
@@ -40,7 +40,7 @@ class ITerminal:
 
         return args
 
-    def execute(self):
+    def _execute(self):
         raise NotImplementedError
 
 

@@ -1,25 +1,28 @@
 # Input/Output Services
 
 # Input service
-input_service = "Terminal"
+INPUT_SERVICE = "Terminal"
 
 # Output service
-output_service = "Terminal"
+OUTPUT_SERVICE = "Terminal"
+
+
+# Data Files
+
+# Raw data filename
+DATA_FILENAME = __import__("pkg_resources").resource_filename("sigma", "data/data.dat")
 
 
 # User Interface
 
 # Service class names
-services = ["Terminal", "GUI", "Matplotlib", "Rhino", "Blender", "Database", "Filesystem"]
+SERVICES = ["Terminal", "GUI", "Matplotlib", "Rhino", "Blender", "Database", "Filesystem"]
 
 # Modifier class names
-modifiers = ["Sigma"]
+MODIFIERS = ["Sigma"]
 
 # Filter class names
-filters = ["Filter"]
+FILTERS = ["Filter"]
 
 # Creator class names
-creators = ["Crystal", "Branching", "CrystalBranching", "Worm"]
-
-# Raw data filename
-data_filename = "sigma/data/data.dat"
+CREATORS = ["Crystal", "Branching", "CrystalBranching", "Worm"]
