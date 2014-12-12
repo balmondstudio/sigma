@@ -11,13 +11,13 @@ class ITerminal:
         self._parser.add_argument("-m", "--modifier",
                 nargs="+",
                 type=str,
-                choises=config.modifiers,
+                choices=config.modifiers,
                 help="data modifier stack")
 
         self._parser.add_argument("-f", "--filter",
                 nargs="+",
                 type=str,
-                choises=config.filters,
+                choices=config.filters,
                 help="data filter stack")
 
         self._parser.add_argument("-c", "--creator",
@@ -33,6 +33,9 @@ class ITerminal:
                 help="raw data file")
 
         self._args = self._parser.parse_args()
+
+    def execute(self):
+        raise NotImplementedError
 
 
 class IGUI:

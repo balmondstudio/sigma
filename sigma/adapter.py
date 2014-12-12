@@ -28,7 +28,13 @@ class TerminalInputAdapter(IInputAdapter, sigma.service.ITerminal):
     def _create_assembler(self):
         return sigma.data_tranfer_object.DataTransferObjectAssembler()
 
-    #TODO: Terminal interface implementation
+    def execute(self):
+        self._adaptee.execute(
+                self._assembler.assemble(raw_data),
+                self._args.modifiers,
+                self._args.filters,
+                self._args.creator
+                )
 
 
 class IOutputAdapter(sigma.port.IOutputPort):

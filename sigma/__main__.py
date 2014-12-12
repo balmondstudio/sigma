@@ -1,8 +1,12 @@
-import argparse
+import sigma.adapter
+
 
 def main():
-    parser = argparse.ArgumentParser(description="Sigma")
-    #parser.add_argument(...)
+    input_adapter = sigma.adapter.TerminalInputAdapter()
+    output_adapter = sigma.adapter.TemrinalOutputAdapter()
+
+    input_adapter.execute(output_adapter)
+
 
 if __name__ == "__main__":
     main()
