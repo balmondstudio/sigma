@@ -3,11 +3,7 @@ import sigma.config
 
 class ITerminal:
 
-    def __init__(self):
-        self._args = self._parse_args()
-        self._execute()
-
-    def _parse_args(self):
+    def input(self):
         argparse = __import__("argparse")
 
         parser = argparse.ArgumentParser(description="Sigma")
@@ -40,8 +36,8 @@ class ITerminal:
 
         return args
 
-    def _execute(self):
-        raise NotImplementedError
+    def output(self, data):
+        print(data)
 
 
 class IGUI:

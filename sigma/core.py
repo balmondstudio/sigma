@@ -3,6 +3,7 @@ import sigma.creator
 import sigma.filter
 import sigma.modifier
 import sigma.port
+import sigma.selector
 
 
 class ICore(sigma.port.IInputPort):
