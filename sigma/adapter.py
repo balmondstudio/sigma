@@ -13,35 +13,38 @@ class IInputAdapter:
         raise NotImplementedError
 
 
-class TerminalInputAdapter(IInputAdapter, sigma.service.ITerminal):
+class TerminalInputAdapter(IInputAdapter, sigma.service.TerminalService):
 
     def __init__(self):
         super().__init__()
-        args = self._input()
-        self._command(args)
+        self.input()
 
-    def _create_adaptee(self, *args, **kwargs):
+    def _create_adaptee(self):
         return sigma.core.Core(
-                self._args.outservice,
-                self._args.modifiers,
-                self._args.filters,
-                self._args.creator
+                self._args.creator,
+                self._args.filter,
+                self._args.modifier,
+                self._args.outservice
                 )
 
-    def _create_assembler(self, *args, **kwargs):
-        return sigma.data_tranfer_object.DataTransferObjectAssembler()
+    def _create_assembler(self):
+        return sigma.data_transfer_object.DataTransferObjectAssembler()
 
     def _command(self, args):
-        adaptee = self._create_adaptee()
-        disassembler = self._create_disassembler()
+        self._args = args
 
-        raw_data = self._args.infile.read()
-        data_transfer_object = assembler.assemble(raw_data)
-        adaptee.execute(data_tranfer_object)
+        adaptee = self._create_adaptee()
+        assembler = self._create_assembler()
+
+        data_transfer_object = assembler.assemble(args.infile.read())
+        adaptee.execute(data_transfer_object)
 
 
 class IOutputAdapter(sigma.port.IOutputPort):
 
+    def __init__(self):
+        super().__init__()
+
     def _create_adaptee(self):
         raise NotImplementedError
 
@@ -52,19 +55,20 @@ class IOutputAdapter(sigma.port.IOutputPort):
         raise NotImplementedError
 
 
-class TerminalInputAdapter(IOutputAdapter):
+class TerminalOutputAdapter(IOutputAdapter):
 
     def __init__(self):
         super().__init__()
-        self._adaptee = self._create_adaptee()
-        self._disassembler = self._create_disassembler()
 
     def _create_adaptee(self):
-        return sigma.service.ITerminal()
+        return sigma.service.TerminalService()
 
     def _create_disassembler(self):
-        return sigma.data_tranfer_object.DataTransferObjectDisassembler()
+        return sigma.data_transfer_object.DataTransferObjectDisassembler()
 
     def execute(self, data_transfer_object):
-        raw_data = self._disassembler.disassembler(data_transfer_object)
-        self._adaptee.output(raw_data)
+        adaptee = self._create_adaptee()
+        disassembler = self._create_disassembler()
+
+        raw_data = disassembler.disassemble(data_transfer_object)
+        adaptee.output(raw_data)

@@ -6,5 +6,5 @@ class IInputPort:
 
 class IOutputPort:
 
-    def execute(self, raw_data):
+    def execute(self, data_transfer_object):
         raise NotImplementedError

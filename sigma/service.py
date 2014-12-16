@@ -1,7 +1,25 @@
 import sigma.config
 
 
-class ITerminal:
+class IService:
+
+    def __init__(self):
+        super().__init__()
+
+    def input(self):
+        raise NotImplementedError
+
+    def output(self):
+        raise NotImplementedError
+
+
+class TerminalService(IService):
+
+    def __init__(self):
+        super().__init__()
+
+    def _command(self, args):
+        raise NotImplementedError
 
     def input(self):
         argparse = __import__("argparse")
@@ -12,53 +30,60 @@ class ITerminal:
           nargs="+",
           type=str,
           choices=sigma.config.MODIFIERS,
-          help="data modifier stack")
+          help="modifier name stack")
 
         parser.add_argument("-f", "--filter",
           nargs="+",
           type=str,
           choices=sigma.config.FILTERS,
-          help="data filter stack")
+          help="filter name stack")
 
         parser.add_argument("-c", "--creator",
           nargs=1,
           type=str,
           choices=sigma.config.CREATORS,
-          help="creator on data")
+          help="creator name")
 
         parser.add_argument("-i", "--infile",
           nargs="?",
           default=sigma.config.DATA_FILENAME,
           type=argparse.FileType("r"),
-          help="raw data file")
+          help="input raw-data filename")
+
+        parser.add_argument("-o", "--outservice",
+          nargs="?",
+          default=sigma.config.OUTPUT_SERVICE,
+          type=str,
+          choices=sigma.config.SERVICES,
+          help="output service name")
 
         args = parser.parse_args()
 
-        return args
+        self._command(args)
 
     def output(self, data):
         print(data)
 
 
-class IGUI:
+class GUIService(IService):
     pass
 
 
-class IMatplotlib:
+class MatplotlibService(IService):
     pass
 
 
-class IRhino:
+class RhinoService(IService):
     pass
 
 
-class IBlender:
+class BlenderService(IService):
     pass
 
 
-class IDatabase:
+class DatabaseService(IService):
     pass
 
 
-class IFilesystem:
+class FilesystemService(IService):
     pass

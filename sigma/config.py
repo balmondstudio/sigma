@@ -1,19 +1,10 @@
-# Input/Output Services
+# Global Configuration
 
 # Input service
 INPUT_SERVICE = "Terminal"
 
 # Output service
 OUTPUT_SERVICE = "Terminal"
-
-
-# Data Files
-
-# Raw data filename
-DATA_FILENAME = __import__("pkg_resources").resource_filename("sigma", "data/data.dat")
-
-
-# User Interface
 
 # Service class names
 SERVICES = ["Terminal", "GUI", "Matplotlib", "Rhino", "Blender", "Database", "Filesystem"]
@@ -26,3 +17,22 @@ FILTERS = ["Filter"]
 
 # Creator class names
 CREATORS = ["Crystal", "Branching", "CrystalBranching", "Worm"]
+
+# Raw data filename
+DATA_FILENAME = __import__("pkg_resources").resource_filename("sigma", "data/data.dat")
+
+
+# Local Configuration
+
+# Terminal Service
+pass
+
+# Matplotlib Service
+
+# Rhino Service
+
+# Blender Service
+
+# Database Service
+
+# Filestystem Service
