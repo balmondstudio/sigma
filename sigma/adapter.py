@@ -6,10 +6,17 @@ import sigma.service
 
 class IInputAdapter:
 
+    def _execute(self, target_data):
+        adaptee_data = self._convert_data(target_data)
+        self._create_adaptee().execute(adaptee_data)
+
+    def _convert_data(self, adaptee_data):
+        raise NotImplementedError
+
     def _create_adaptee(self):
         raise NotImplementedError
 
-    def _create_assembler(self):
+    def _create_data_converter(self):
         raise NotImplementedError
 
 
@@ -18,6 +25,11 @@ class TerminalInputAdapter(IInputAdapter, sigma.service.TerminalService):
     def __init__(self):
         super().__init__()
         self.input()
+
+    def _convert(self, target_data):
+        data = json.dumps(target_data)
+        adaptee_data = self._create_assembler.assemble(data)
+        return data_tranfer_object
 
     def _create_adaptee(self):
         return sigma.core.Core(
@@ -32,26 +44,22 @@ class TerminalInputAdapter(IInputAdapter, sigma.service.TerminalService):
 
     def _command(self, args):
         self._args = args
-
-        adaptee = self._create_adaptee()
-        assembler = self._create_assembler()
-
-        data_transfer_object = assembler.assemble(args.infile.read())
-        adaptee.execute(data_transfer_object)
+        self._execute(self._args.infile.read())
 
 
 class IOutputAdapter(sigma.port.IOutputPort):
 
-    def __init__(self):
-        super().__init__()
+    def execute(self, target_data):
+        adaptee_data = self._convert_data(target_data)
+        self._create_adaptee().output(adaptee_data)
+
+    def _convert_data(self, data):
+        raise NotImplementedError
 
     def _create_adaptee(self):
         raise NotImplementedError
 
     def _create_disassembler(self):
-        raise NotImplementedError
-
-    def execute(self, data_transfer_object):
         raise NotImplementedError
 
 
@@ -60,15 +68,35 @@ class TerminalOutputAdapter(IOutputAdapter):
     def __init__(self):
         super().__init__()
 
+    def _convert(self, data_transfer_object):
+        data = disassembler.disassemble(data_transfer_object)
+        raw_data = self._convert(data)
+        return json.loads(data)
+
     def _create_adaptee(self):
         return sigma.service.TerminalService()
 
     def _create_disassembler(self):
         return sigma.data_transfer_object.DataTransferObjectDisassembler()
 
-    def execute(self, data_transfer_object):
-        adaptee = self._create_adaptee()
-        disassembler = self._create_disassembler()
 
-        raw_data = disassembler.disassemble(data_transfer_object)
-        adaptee.output(raw_data)
+class IAdapter:
+
+    def _adapt(self, target_data):
+        adaptee_data = self._convert_data(target_data)
+        self._create_adaptee()._execute_adaptee(adaptee_data)
+
+    def _convert_data(self, target_data):
+        raise NotImplementedError
+
+    def _execute_adaptee(self, adaptee_data):
+        raise NotImplementedError
+
+    def _create_adaptee(self):
+        raise NotImplementedError
+
+    def _create_adaptee_data_converter(self):
+        raise NotImplementedError
+
+    def _create_target_data_converter(self):
+        raise NotImplementedError

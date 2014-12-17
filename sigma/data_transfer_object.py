@@ -4,29 +4,23 @@ class IDataTransferObject:
 
 class IDataTransferObjectAssembler:
 
-    def assemble(self, raw_data):
-        return raw_data # FIXME
-
-    def createDataTransferObject(self):
+    def assemble(self, data):
         raise NotImplementedError
 
 
 class DataTransferObjectAssembler(IDataTransferObjectAssembler):
 
-    def createDataTransferObject(self):
-        pass
+    def assemble(self, data):
+        return data_tranfer_object
 
 
 class IDataTransferObjectDisassembler:
 
     def disassemble(self, data_transfer_object):
-        return data_transfer_object # FIXME
-
-    def createRawData(self):
         raise NotImplementedError
 
 
 class DataTransferObjectDisassembler(IDataTransferObjectDisassembler):
 
-    def createRawData(self):
-        pass
+    def disassemble(self, data_transfer_object):
+        return data
