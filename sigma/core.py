@@ -7,11 +7,8 @@ import sigma.port
 
 class ICore(sigma.port.IInputPort):
 
-    def __init__(self, creator, filter, modifier, outservice):
-        self._creator = self._create_creator(creator)
-        self._filter = self._create_filter(filter)
-        self._modifier = self._create_modifier(modifier)
-        self._output_service = self._create_output_service(outservice)
+    def __init__(self):
+        self._data_tranfer_object = None
 
     def _create_creator(self, name):
         raise NotImplementedError
@@ -29,7 +26,7 @@ class ICore(sigma.port.IInputPort):
 class Core(ICore):
 
     def __init__(self, modifier, filter, creator, outservice):
-        super().__init__(modifier, filter, creator, outservice)
+        super().__init__()
 
     def _create_creator(self, name):
         print(name)
@@ -51,4 +48,7 @@ class Core(ICore):
         return eval(command)
 
     def execute(self, data_transfer_object):
-        self._output_service.execute(data_transfer_object)
+        self._data_transfer_object = data_transfer_object
+
+        output_service = self._create_output_service(self._data_transfer_object.outservice)
+        output_service.execute(data_transfer_object)
