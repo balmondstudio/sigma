@@ -6,20 +6,22 @@ import sigma.port
 import sigma.service
 
 
-class IAdapter:
+class IInputAdapter:
 
     def _create_adaptee(self):
         raise NotImplementedError
 
-    def _create_adaptee_data_converter(self):
+    def _create_adaptee_converter(self):
         raise NotImplementedError
 
 
-class IInputAdapter:
-    pass
-
-
 class IOutputAdapter(sigma.port.IOutputPort):
+
+    def _create_adaptee(self):
+        raise NotImplementedError
+
+    def _create_adaptee_converter(self):
+        raise NotImplementedError
 
     def execute(self, target_data):
         raise NotImplementedError
@@ -34,9 +36,9 @@ class TerminalInputAdapter(IInputAdapter, sigma.service.TerminalService):
     def _command(self, args):
         self._args = args
 
-        target_data = self._args.infile.read()
+        target_data = self._args.data.read()
         generic_data = json.loads(target_data)
-        adaptee_data = self._create_adaptee_data_converter().assemble(generic_data)
+        adaptee_data = self._create_adaptee_converter().assemble(generic_data)
 
         self._create_adaptee().execute(adaptee_data)
 
@@ -45,10 +47,10 @@ class TerminalInputAdapter(IInputAdapter, sigma.service.TerminalService):
                  self._args.creator,
                  self._args.filter,
                  self._args.modifier,
-                 self._args.outservice
+                 self._args.service
                  )
 
-    def _create_adaptee_data_converter(self):
+    def _create_adaptee_converter(self):
         return sigma.data_transfer_object.DataTransferObjectConverter()
 
 
@@ -58,7 +60,7 @@ class TerminalOutputAdapter(IOutputAdapter):
         super().__init__()
 
     def execute(self, target_data):
-        generic_data = self._create_adaptee_data_converter().disassemble(target_data)
+        generic_data = self._create_adaptee_converter().disassemble(target_data)
         adaptee_data = json.dumps(generic_data)
 
         self._create_adaptee().output(adaptee_data)

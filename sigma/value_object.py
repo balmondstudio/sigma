@@ -44,7 +44,7 @@ class IValueObject(sigma.operator.IRepresentable, sigma.operator.IComparable,
 
     def __bytes__(self):
         """Overload bytes operator."""
-        return bytes(self._data)
+        return bytes("{0}".format(self._data), "utf-8")
 
     def __format__(self, format_spec=""):
         """Overload fromat operator."""

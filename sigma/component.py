@@ -1,11 +1,13 @@
 import sigma.data_transfer_object
 import sigma.operator
+import sigma.value_object
+
 
 class Component(sigma.data_transfer_object.IDataTransferObject):
     pass
 
 
-class Primitive(Component):
+class Primitive(Component, sigma.operator.IRepresentable):
 
     @property
     def relative_key(self):
@@ -32,9 +34,23 @@ class Primitive(Component):
         self._value = value
 
     def __init__(self, relative_key, absolute_key, value):
-        self._relative_key = relative_key
-        self._absolute_key = absolute_key
-        self._value = value
+        self._relative_key = sigma.value_object.RelativeKey(relative_key)
+        self._absolute_key = sigma.value_object.AbsoluteKey(absolute_key)
+        self._value = sigma.value_object.Value(value)
+
+    def __repr__(self):
+        return "Primitive({0}, {1}, {2})".format(self._relative_key, 
+                self._absolute_key, self._value)
+
+    def __str__(self):
+        return "{{relative_key: {0}, absolute_key: {1}, value: {2}}}".format(self._relative_key, self._absolute_key, self._value)
+
+    def __bytes__(self):
+        return bytes("{{relative_key: {0}, absolute_key: {1}, value: {2}}}".format(
+            self._relative_key, self._absolute_key, self._value), "utf-8")
+
+    def __format__(self, format_spec=""):
+        return "{{relative_key: {0}, absolute_key: {1}, value: {2}}}".format(self._relative_key, self._absolute_key, self._value)
 
 
 class Composite(Component, sigma.operator.IRepresentable,
@@ -47,10 +63,10 @@ class Composite(Component, sigma.operator.IRepresentable,
 
     @primitives.setter
     def primitives(self, value):
-        self.components = value
+        self._primitives = value
 
-    def __init__(self, primitives):
-        self._primitives = primitives
+    def __init__(self, primitives=None):
+        self._primitives = [] if primitives is None else primitives
 
     def __repr__(self):
         return "Composite({0})".format(self._primitives)
@@ -59,7 +75,7 @@ class Composite(Component, sigma.operator.IRepresentable,
         return "{0}".format(self._primitives)
 
     def __bytes__(self):
-        return bytes(self._primitives)
+        return bytes("{0}".format(self._primitives), "utf-8")
 
     def __format__(self, format_spec=""):
         return "{0}".format(self._primitives)
@@ -160,11 +176,11 @@ class Composite(Component, sigma.operator.IRepresentable,
     def __iadd__(self, other):
         return self._primitives.__iadd__(other._primitives)
 
-    def __mul__(self, other):
-        return self._primitives.__mull__(other._primitives)
+    def __mul__(self, value):
+        return self._primitives.__mull__(value)
 
-    def __rmul__(self, other):
-        return self._primitives.__rmul__(other._primitives)
+    def __rmul__(self, value):
+        return self._primitives.__rmul__(value)
 
-    def __imul__(self, other):
-        return self._primitives.__imul__(other._primitives)
+    def __imul__(self, value):
+        return self._primitives.__imul__(value)

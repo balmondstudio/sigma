@@ -25,8 +25,12 @@ class ICore(sigma.port.IInputPort):
 
 class Core(ICore):
 
-    def __init__(self, modifier, filter, creator, outservice):
+    def __init__(self, creator, filter, modifier, service):
         super().__init__()
+        self._creator = self._create_creator(creator)
+        self._filter = self._create_filter(filter)
+        self._modifier = self._create_modifier(modifier)
+        self._service = self._create_service(service)
 
     def _create_creator(self, name):
         print(name)
@@ -43,12 +47,13 @@ class Core(ICore):
         #command = "sigma.modifier.{0}Modifier()".format(name)
         #return eval(command)
 
-    def _create_output_service(self, name):
+    def _create_service(self, name):
         command = "sigma.adapter.{0}OutputAdapter()".format(name)
         return eval(command)
 
     def execute(self, data_transfer_object):
         self._data_transfer_object = data_transfer_object
 
-        output_service = self._create_output_service(self._data_transfer_object.outservice)
-        output_service.execute(data_transfer_object)
+        # TODO: Main algorithm
+
+        self._service.execute(data_transfer_object)

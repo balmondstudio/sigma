@@ -26,36 +26,36 @@ class TerminalService(IService):
 
         parser = argparse.ArgumentParser(description="Sigma")
 
-        parser.add_argument("-m", "--modifier",
-          nargs="+",
-          type=str,
-          choices=sigma.config.MODIFIERS,
-          help="modifier name stack")
-
-        parser.add_argument("-f", "--filter",
-          nargs="+",
-          type=str,
-          choices=sigma.config.FILTERS,
-          help="filter name stack")
-
         parser.add_argument("-c", "--creator",
           nargs=1,
           type=str,
           choices=sigma.config.CREATORS,
           help="creator name")
 
-        parser.add_argument("-i", "--infile",
-          nargs="?",
-          default=sigma.config.DATA_FILENAME,
-          type=argparse.FileType("r"),
-          help="input raw-data filename")
+        parser.add_argument("-f", "--filter",
+          nargs="+",
+          type=str,
+          choices=sigma.config.FILTERS,
+          help="filter name")
 
-        parser.add_argument("-o", "--outservice",
+        parser.add_argument("-m", "--modifier",
+          nargs="+",
+          type=str,
+          choices=sigma.config.MODIFIERS,
+          help="modifier name")
+
+        parser.add_argument("-s", "--service",
           nargs="?",
           default=sigma.config.OUTPUT_SERVICE,
           type=str,
           choices=sigma.config.SERVICES,
-          help="output service name")
+          help="service name")
+
+        parser.add_argument("-d", "--data",
+          nargs="?",
+          default=sigma.config.DATA_FILENAME,
+          type=argparse.FileType("r"),
+          help="data filename")
 
         args = parser.parse_args()
 
