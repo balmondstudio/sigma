@@ -1,4 +1,4 @@
-import sigma.operator
+import sigma.interface
 import sigma.value_object
 
 
@@ -6,7 +6,7 @@ class IDataTransferObject:
     pass
 
 
-class Primitive(IDataTransferObject, sigma.operator.IRepresentable):
+class Primitive(IDataTransferObject, sigma.interface.IRepresentable):
 
     @property
     def relative_key(self):
@@ -51,9 +51,9 @@ class Primitive(IDataTransferObject, sigma.operator.IRepresentable):
         return "{{relative_key: {0}, absolute_key: {1}, value: {2}}}".format(self._relative_key, self._absolute_key, self._value)
 
 
-class Composite(IDataTransferObject, sigma.operator.IRepresentable,
-        sigma.operator.IComparable, sigma.operator.IBitwise,
-        sigma.operator.IContainer, sigma.operator.ISequence):
+class Composite(IDataTransferObject, sigma.interface.IRepresentable,
+        sigma.interface.IComparable, sigma.interface.IBitwise,
+        sigma.interface.IContainer, sigma.interface.ISequence):
 
     @property
     def primitives(self):

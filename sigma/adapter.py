@@ -36,16 +36,15 @@ class TerminalInputAdapter(IInputAdapter, sigma.service.TerminalService):
 
     def _command(self, args):
         # Setup adaptee data
-        target_data = self._args.data.read()
+        target_data = args.data.read()
         generic_data = json.loads(target_data)
         adaptee_data = self._create_adaptee_converter().assemble(generic_data)
 
         # Setup adaptee
         adaptee = self._create_adaptee()
+        adaptee.stack = args.stack
 
-        self._args.stack
-        "{0}OutputAdapter".format(sigma.config.OUTPUT_SERVICE)
-
+        # Run adaptee
         self._create_adaptee().execute(adaptee_data)
 
     def _create_adaptee(self):

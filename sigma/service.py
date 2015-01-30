@@ -28,6 +28,7 @@ class TerminalService(IService):
 
         parser.add_argument("-s", "--stack",
                 nargs="+",
+                default=[],
                 type=str,
                 choices=sigma.config.CREATORS + sigma.config.FILTERS + sigma.config.MODIFIERS,
                 help="dataflow stack")

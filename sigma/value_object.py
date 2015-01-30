@@ -5,11 +5,11 @@ encapsulate a set of operations that emulate equality behaviours based on field
 values within the class and not on their id."""
 
 
-import sigma.operator
+import sigma.interface
 
 
-class IValueObject(sigma.operator.IRepresentable, sigma.operator.IComparable, 
-        sigma.operator.IBitwise, sigma.operator.INumeric):
+class IValueObject(sigma.interface.IRepresentable, sigma.interface.IComparable, 
+        sigma.interface.IBitwise, sigma.interface.INumeric):
     """Value Object interface.
 
     Interface to be implemented by classes that require their baseis for
