@@ -20,7 +20,6 @@ class Primitive(IDataTransferObject, sigma.operator.IRepresentable):
     def absolute_key(self):
         return self._absolute_key
 
-    @absolute_key.setter
     def absolute_key(self, value):
         self._absolute_key = value
 
@@ -38,7 +37,7 @@ class Primitive(IDataTransferObject, sigma.operator.IRepresentable):
         self._value = sigma.value_object.Value(value)
 
     def __repr__(self):
-        return "Primitive({0}, {1}, {2})".format(self._relative_key, 
+        return "Primitive({0}, {1}, {2})".format(self._relative_key,
                 self._absolute_key, self._value)
 
     def __str__(self):
@@ -207,8 +206,8 @@ class DataTransferObjectConverter(IDataTransferObjectConverter):
         data = []
         for primitive in composite:
             data.append({
-                "relative_key": primitive.relative_key.data, 
-                "absolute_key": primitive.absolute_key.data, 
+                "relative_key": primitive.relative_key.data,
+                "absolute_key": primitive.absolute_key.data,
                 "value": primitive.value.data
                 })
         return data

@@ -10,22 +10,20 @@ OUTPUT_SERVICE = "Terminal"
 SERVICES = ["Terminal", "GUI", "Matplotlib", "Rhino", "Blender", "Database", "Filesystem"]
 
 # Modifier class names
-MODIFIERS = ["Sigma"]
+MODIFIERS = ["SigmaModifier"]
 
 # Filter class names
-FILTERS = ["Filter"]
+FILTERS = ["SigmaFilter"]
 
 # Creator class names
-CREATORS = ["Crystal", "Branching", "CrystalBranching", "Worm"]
+CREATORS = ["CrystalCreator", "BranchingCreator", "CrystalBranchingCreator", "WormCreator"]
 
 # Raw data filename
 DATA_FILENAME = __import__("pkg_resources").resource_filename("sigma", "data/data.dat")
 
-
 # Local Configuration
 
 # Terminal Service
-pass
 
 # Matplotlib Service
 
