@@ -9,16 +9,19 @@ class Core(sigma.port.IInputPort):
         output_adapter_name = "{0}OutputAdapter".format(sigma.config.OUTPUT_SERVICE)
         self._output_adapter = self._create_output_adapter(output_adapter_name)
 
+        self._operator_stack = None
+
     def _create_operator(self, operator_name):
-        return eval("sigma.operator.{0}".format(operator_name))
+        return eval("sigma.operator.{0}".format(operator_name))()
 
     def _create_output_adapter(self, output_adapter_name):
-        return eval("sigma.adapter.{0}".format(output_adapter_name))
+        return eval("sigma.adapter.{0}".format(output_adapter_name))()
 
-    def execute(self, data_transfer_object):
-        operator_stack = [self._create_operator(operator_name) for operator_name in self._operator_stack_name]
-        for operator in operator_stack:
-            data_transfer_object = operator.operate(data_transfer_object)
+    def setup(self, **kwargs):
+        self._operator_stack = [self._create_operator(operator_name) for operator_name in kwargs["stack"]]
 
-        print(self._output_adapter)
-        self._output_adapter.execute(data_transfer_object)
+    def execute(self, dto):
+        for operator in self._operator_stack:
+            dto = operator.operate(dto)
+
+        self._output_adapter.execute(dto)

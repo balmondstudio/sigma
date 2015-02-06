@@ -1,12 +1,12 @@
 import sigma.interface
-import sigma.value_object
+import sigma.vo
 
 
-class IDataTransferObject:
+class IDTO:
     pass
 
 
-class Primitive(IDataTransferObject, sigma.interface.IRepresentable):
+class Primitive(IDTO, sigma.interface.IRepresentable):
 
     @property
     def relative_key(self):
@@ -20,6 +20,7 @@ class Primitive(IDataTransferObject, sigma.interface.IRepresentable):
     def absolute_key(self):
         return self._absolute_key
 
+    @absolute_key.setter
     def absolute_key(self, value):
         self._absolute_key = value
 
@@ -32,9 +33,9 @@ class Primitive(IDataTransferObject, sigma.interface.IRepresentable):
         self._value = value
 
     def __init__(self, relative_key, absolute_key, value):
-        self._relative_key = sigma.value_object.RelativeKey(relative_key)
-        self._absolute_key = sigma.value_object.AbsoluteKey(absolute_key)
-        self._value = sigma.value_object.Value(value)
+        self._relative_key = sigma.vo.RelativeKey(relative_key)
+        self._absolute_key = sigma.vo.AbsoluteKey(absolute_key)
+        self._value = sigma.vo.Value(value)
 
     def __repr__(self):
         return "Primitive({0}, {1}, {2})".format(self._relative_key,
@@ -51,7 +52,7 @@ class Primitive(IDataTransferObject, sigma.interface.IRepresentable):
         return "{{relative_key: {0}, absolute_key: {1}, value: {2}}}".format(self._relative_key, self._absolute_key, self._value)
 
 
-class Composite(IDataTransferObject, sigma.interface.IRepresentable,
+class Composite(IDTO, sigma.interface.IRepresentable,
         sigma.interface.IComparable, sigma.interface.IBitwise,
         sigma.interface.IContainer, sigma.interface.ISequence):
 
@@ -184,16 +185,16 @@ class Composite(IDataTransferObject, sigma.interface.IRepresentable,
         return self._primitives.__imul__(value)
 
 
-class IDataTransferObjectConverter:
+class IDTOConverter:
 
     def assemble(self, data):
         raise NotImplementedError
 
-    def disassemble(self, data_transfer_object):
+    def disassemble(self, dto):
         raise NotImplementedError
 
 
-class DataTransferObjectConverter(IDataTransferObjectConverter):
+class DTOConverter(IDTOConverter):
 
     def assemble(self, data):
         composite = Composite()

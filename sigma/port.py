@@ -1,10 +1,16 @@
 class IInputPort:
 
-    def execute(self, data_transfer_object):
+    def setup(self, **kwargs):
+        raise NotImplementedError
+
+    def execute(self, dto):
         raise NotImplementedError
 
 
 class IOutputPort:
 
-    def execute(self, data_transfer_object):
+    def setup(self, **kwargs):
+        raise NotImplementedError
+
+    def execute(self, dto):
         raise NotImplementedError

@@ -1,7 +1,7 @@
 import json
 
 import sigma.core
-import sigma.data_transfer_object
+import sigma.dto
 import sigma.port
 import sigma.service
 
@@ -23,6 +23,9 @@ class IOutputAdapter(sigma.port.IOutputPort):
     def _create_adaptee_converter(self):
         raise NotImplementedError
 
+    def setup(self, **kwargs):
+        raise NotImplementedError
+
     def execute(self, target_data):
         raise NotImplementedError
 
@@ -35,23 +38,21 @@ class TerminalInputAdapter(IInputAdapter, sigma.service.TerminalService):
         self.input()
 
     def _command(self, args):
-        # Setup adaptee data
+        # Adaptee data
         target_data = args.data.read()
         generic_data = json.loads(target_data)
         adaptee_data = self._create_adaptee_converter().assemble(generic_data)
 
-        # Setup adaptee
+        # Adaptee
         adaptee = self._create_adaptee()
-        adaptee.stack = args.stack
-
-        # Run adaptee
-        self._create_adaptee().execute(adaptee_data)
+        adaptee.setup(stack=args.stack)
+        adaptee.execute(adaptee_data)
 
     def _create_adaptee(self):
         return sigma.core.Core()
 
     def _create_adaptee_converter(self):
-        return sigma.data_transfer_object.DataTransferObjectConverter()
+        return sigma.dto.DTOConverter()
 
 
 class TerminalOutputAdapter(IOutputAdapter):
@@ -59,14 +60,20 @@ class TerminalOutputAdapter(IOutputAdapter):
     def __init__(self):
         super().__init__()
 
-    def execute(self, target_data):
-        generic_data = self._create_adaptee_converter().disassemble(target_data)
-        adaptee_data = json.dumps(generic_data)
+    def setup(self, **kwargs):
+        pass
 
+    def execute(self, target_data):
+        # Adaptee data
+        generic_data = self._create_adaptee_converter().disassemble(target_data)
+        #adaptee_data = json.dumps(generic_data)
+        adaptee_data = json.dumps(generic_data, indent=4, sort_keys=True)
+
+        # Adaptee
         self._create_adaptee().output(adaptee_data)
 
     def _create_adaptee(self):
         return sigma.service.TerminalService()
 
-    def _create_adaptee_data_converter(self):
-        return sigma.data_transfer_object.DataTransferObjectConverter()
+    def _create_adaptee_converter(self):
+        return sigma.dto.DTOConverter()

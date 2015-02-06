@@ -8,7 +8,7 @@ values within the class and not on their id."""
 import sigma.interface
 
 
-class IValueObject(sigma.interface.IRepresentable, sigma.interface.IComparable, 
+class IVO(sigma.interface.IRepresentable, sigma.interface.IComparable, 
         sigma.interface.IBitwise, sigma.interface.INumeric):
     """Value Object interface.
 
@@ -36,7 +36,7 @@ class IValueObject(sigma.interface.IRepresentable, sigma.interface.IComparable,
 
     def __repr__(self):
         """Overload repr operator."""
-        return "IValueObject({0})".format(self._data)
+        return "IVO({0})".format(self._data)
 
     def __str__(self):
         """Overload str operator."""
@@ -74,7 +74,7 @@ class IValueObject(sigma.interface.IRepresentable, sigma.interface.IComparable,
         """Overload binary != operator."""
         return self._data < other._data
 
-    __hash__ = None # IValueObject is mutable hence non-hashable
+    __hash__ = None # IVO is mutable hence non-hashable
 
     def __bool__(self):
         """Overload binary nonzero operator."""
@@ -338,7 +338,7 @@ class IValueObject(sigma.interface.IRepresentable, sigma.interface.IComparable,
         return type(self)(data)
 
 
-class RelativeKey(IValueObject):
+class RelativeKey(IVO):
     """3D relative cartesian coordinates.
 
     Class representing 3D relative cartesian coordinates, relative to objects.
@@ -382,7 +382,7 @@ class RelativeKey(IValueObject):
         super().__init__(data)
 
 
-class AbsoluteKey(IValueObject):
+class AbsoluteKey(IVO):
     """3D absolute cartesian coordinates.
 
     Class representing 3D absolute cartesian coordinates, relative to world.
@@ -426,7 +426,7 @@ class AbsoluteKey(IValueObject):
         super().__init__(data)
 
 
-class Value(IValueObject):
+class Value(IVO):
     """Value representation.
 
     Class representing a generic value.
@@ -436,14 +436,15 @@ class Value(IValueObject):
     """
 
     @property
-    def value(self):
+    def n(self):
         """Data accessor value."""
-        return self._data
+        print(self._data)
+        return self._data[0]
 
-    @value.setter
-    def value(self, value):
+    @n.setter
+    def n(self, value):
         """Data mutator value."""
-        self._data = value
+        self._data = [value]
 
     def __init__(self, data):
         """Value data."""
