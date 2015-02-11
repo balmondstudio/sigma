@@ -26,12 +26,12 @@ class TerminalService(IService):
 
         parser = argparse.ArgumentParser(description="Sigma")
 
-        parser.add_argument("-s", "--stack",
+        parser.add_argument("-o", "--operator",
                 nargs="+",
                 default=[],
                 type=str,
-                choices=sigma.config.CREATORS + sigma.config.FILTERS + sigma.config.MODIFIERS,
-                help="dataflow stack")
+                choices=sigma.config.OPERATORS,
+                help="operator name")
 
         parser.add_argument("-d", "--data",
                 nargs="?",
@@ -44,7 +44,7 @@ class TerminalService(IService):
         self._command(args)
 
     def output(self, data):
-        print(data)
+        __import__("pprint").pprint(data)
 
 
 class GUIService(IService):

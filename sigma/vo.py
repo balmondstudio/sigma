@@ -8,7 +8,7 @@ values within the class and not on their id."""
 import sigma.interface
 
 
-class IVO(sigma.interface.IRepresentable, sigma.interface.IComparable, 
+class IVO(sigma.interface.IRepresentable, sigma.interface.IComparable,
         sigma.interface.IBitwise, sigma.interface.INumeric):
     """Value Object interface.
 

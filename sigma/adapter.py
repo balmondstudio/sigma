@@ -45,7 +45,7 @@ class TerminalInputAdapter(IInputAdapter, sigma.service.TerminalService):
 
         # Adaptee
         adaptee = self._create_adaptee()
-        adaptee.setup(stack=args.stack)
+        adaptee.setup(operator=args.operator)
         adaptee.execute(adaptee_data)
 
     def _create_adaptee(self):
@@ -66,8 +66,8 @@ class TerminalOutputAdapter(IOutputAdapter):
     def execute(self, target_data):
         # Adaptee data
         generic_data = self._create_adaptee_converter().disassemble(target_data)
-        #adaptee_data = json.dumps(generic_data)
-        adaptee_data = json.dumps(generic_data, indent=4, sort_keys=True)
+        adaptee_data = json.dumps(generic_data)
+        #adaptee_data = json.dumps(generic_data, indent=4, sort_keys=True)
 
         # Adaptee
         self._create_adaptee().output(adaptee_data)

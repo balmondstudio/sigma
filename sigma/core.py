@@ -18,10 +18,10 @@ class Core(sigma.port.IInputPort):
         return eval("sigma.adapter.{0}".format(output_adapter_name))()
 
     def setup(self, **kwargs):
-        self._operator_stack = [self._create_operator(operator_name) for operator_name in kwargs["stack"]]
+        self._operators = [self._create_operator(operator_name) for operator_name in kwargs["operator"]]
 
     def execute(self, dto):
-        for operator in self._operator_stack:
+        for operator in self._operators:
             dto = operator.operate(dto)
 
         self._output_adapter.execute(dto)
