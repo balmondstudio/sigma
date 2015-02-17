@@ -9,8 +9,28 @@ class Composite(sigma.interface.IRepresentable, sigma.interface.IComparable,
     def composites(self, value):
         self._composites = value
 
-    def __init__(self, composites=None):
-        self._composites = [] if composite is None else composites
+    def __init__(self):
+        self._composites = []
+
+        self._position = position # Vector(x, y, z)
+        self._size = size # Tuple(x, y, z)
+        self._resolution = resolution # Tuple(x, y, z)
+
+        self._key = None
+        self._value = None
+
+    def _map(self, n, a, b):
+        try:
+            return b[0] + ((n - a[0]) / (a[1] - a[0])) * (b[1] - b[0])
+        except ZeroDivisionError:
+            return b[0]
+
+    def _index(self, composite):
+
+
+
+
+
 
     def __repr__(self):
         return "Composite({0})".format(self._composites)
@@ -128,3 +148,8 @@ class Composite(sigma.interface.IRepresentable, sigma.interface.IComparable,
 
     def __imul__(self, value):
         return self._composites.__imul__(value)
+
+
+if __name__ == "__main__":
+
+    comp = Composite()
