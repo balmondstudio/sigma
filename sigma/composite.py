@@ -15,58 +15,63 @@ class Composite:
 
         self._value = value
 
-        self._composites = [None] * self._resolution[0] * self._resolution[1] * self._resolution[2]
+        # XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX
+        self._composites = [[]] * self._resolution[0] * self._resolution[1] * self._resolution[2]
+        # XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX
 
-    def _map(self, n, a, b):
+    def map(self, n, a, b):
         try:
             return b[0] + ((n - a[0]) / (a[1] - a[0])) * (b[1] - b[0])
         except ZeroDivisionError:
             return b[0]
 
-    def add(self, composite):
+    def append(self, composite):
         i, j, k = self.index(composite)
-        self[i, j, k] = composite
+        self[i, j, k].append(composite)
 
     def remove(self, composite):
         i, j, k = self.index(composite)
-        del self[i, j, k]
+        self[i, j, k].remove(composite)
 
     def index(self, composite):
         if composite._position > self._size:
             raise Exception
 
-        i = int(self._map(composite._position[0], [0, self._size[0]], [0, self._resolution[0]]))
-        j = int(self._map(composite._position[1], [0, self._size[1]], [0, self._resolution[1]]))
-        k = int(self._map(composite._position[2], [0, self._size[2]], [0, self._resolution[2]]))
+        i = int(self.map(composite._position[0], [0, self._size[0]], [0, self._resolution[0]]))
+        j = int(self.map(composite._position[1], [0, self._size[1]], [0, self._resolution[1]]))
+        k = int(self.map(composite._position[2], [0, self._size[2]], [0, self._resolution[2]]))
+        l = self[i][j][k].index(composite)
 
-        return i, j, k
+        return i, j, k, l
 
+    # TODO
     def __len__(self):
         return self._composites.__len__()
 
+    # TODO
     def __length_hint__(self):
         return self._composites.__length_hint__()
 
     def __getitem__(self, key):
-        key = key[0] + (key[1] * self._resolution[1]) + (key[2] * self._resolution[1] * self._resolution[2])
-        return self._composites.__getitem__(key)
+        return self._composites[key[0]][key[1]][key[2]][key[3]]
 
     def __setitem__(self, key, value):
-        key = key[0] + (key[1] * self._resolution[1]) + (key[2] * self._resolution[1] * self._resolution[2])
-        self._composites.__setitem__(key, value)
+        self._composites[key[0]][key[1]][key[2]][key[3]] = value
         return None
 
     def __delitem__(self, key):
-        key = key[0] + (key[1] * self._resolution[1]) + (key[2] * self._resolution[1] * self._resolution[2])
-        self._composites.__delitem__(key)
+        del self._composites[key[0]][key[1]][key[2]][key[3]]
         return None
 
+    # TODO
     def __iter__(self):
         return self._composites.__iter__()
 
+    # TODO
     def __reversed__(self):
         return self._composites.__reversed__()
 
+    # TODO
     def __contains__(self, value):
         return self._composites.__contains__(value)
 
@@ -74,7 +79,19 @@ class Composite:
 
 if __name__ == "__main__":
 
-    container = Composite((0,0,0), (10,10,10), (20,20,20))
-    container.add(Composite((5,5,5), (10,10,10), (10,10,10), 9))
+    container = Composite(
+            position=(0,0,0),
+            size=(20,20,20),
+            resolution=(10,10,10)
+            )
 
-    print(container[0,0,0]._position)
+    composite = Composite(
+            position=(5,5,5),
+            size=(10,10,10),
+            resolution=(10,10,10),
+            value=9
+            )
+
+    container.add(composite)
+
+    print(container.index(composite))
