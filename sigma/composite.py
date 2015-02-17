@@ -1,23 +1,21 @@
-class Composite(sigma.interface.IRepresentable, sigma.interface.IComparable,
-		  sigma.interface.IContainer, sigma.interface.ISequence):
+class Composite:
 
-    @property
-    def composites(self):
-        return self._composites
+    def getValue(self):
+        return self._value
+    def setValue(self, value):
+        self._value = value
+    def delValue(self):
+        del self._value
+    value = property(getValue, setValue, delValue)
 
-    @composites.setter
-    def composites(self, value):
-        self._composites = value
+    def __init__(self, position, size, resolution, value=None):
+        self._position = position
+        self._size = size
+        self._resolution = resolution
 
-    def __init__(self):
-        self._composites = []
+        self._value = value
 
-        self._position = position # Vector(x, y, z)
-        self._size = size # Tuple(x, y, z)
-        self._resolution = resolution # Tuple(x, y, z)
-
-        self._key = None
-        self._value = None
+        self._composites = [None] * self._resolution[0] * self._resolution[1] * self._resolution[2]
 
     def _map(self, n, a, b):
         try:
@@ -25,45 +23,23 @@ class Composite(sigma.interface.IRepresentable, sigma.interface.IComparable,
         except ZeroDivisionError:
             return b[0]
 
-    def _index(self, composite):
+    def add(self, composite):
+        i, j, k = self.index(composite)
+        self[i, j, k] = composite
 
+    def remove(self, composite):
+        i, j, k = self.index(composite)
+        del self[i, j, k]
 
+    def index(self, composite):
+        if composite._position > self._size:
+            raise Exception
 
+        i = int(self._map(composite._position[0], [0, self._size[0]], [0, self._resolution[0]]))
+        j = int(self._map(composite._position[1], [0, self._size[1]], [0, self._resolution[1]]))
+        k = int(self._map(composite._position[2], [0, self._size[2]], [0, self._resolution[2]]))
 
-
-
-    def __repr__(self):
-        return "Composite({0})".format(self._composites)
-
-    def __str__(self):
-        return "{0}".format(self._composites)
-
-    def __bytes__(self):
-        return bytes("{0}".format(self._composites), "utf-8")
-
-    def __format__(self, format_spec=""):
-        return "{0}".format(self._composites)
-
-    def __lt__(self, other):
-        return self._composites.__lt__(other._composites)
-
-    def __le__(self, other):
-        return self._composites.__le__(other._composites)
-
-    def __eq__(self, other):
-        return self._composites.__eq__(other._composites)
-
-    def __ne__(self, other):
-        return self._composites.__ne__(other._composites)
-
-    def __gt__(self, other):
-        return self._composites.__gt__(other._composites)
-
-    def __ge__(self, other):
-        return self._composites.__ge__(other._composites)
-
-    def __bool__(self):
-        return  self._composites.__bool__()
+        return i, j, k
 
     def __len__(self):
         return self._composites.__len__()
@@ -72,13 +48,16 @@ class Composite(sigma.interface.IRepresentable, sigma.interface.IComparable,
         return self._composites.__length_hint__()
 
     def __getitem__(self, key):
+        key = key[0] + (key[1] * self._resolution[1]) + (key[2] * self._resolution[1] * self._resolution[2])
         return self._composites.__getitem__(key)
 
     def __setitem__(self, key, value):
-        self._composites.__setiterm__(key, value)
+        key = key[0] + (key[1] * self._resolution[1]) + (key[2] * self._resolution[1] * self._resolution[2])
+        self._composites.__setitem__(key, value)
         return None
 
     def __delitem__(self, key):
+        key = key[0] + (key[1] * self._resolution[1]) + (key[2] * self._resolution[1] * self._resolution[2])
         self._composites.__delitem__(key)
         return None
 
@@ -91,65 +70,11 @@ class Composite(sigma.interface.IRepresentable, sigma.interface.IComparable,
     def __contains__(self, value):
         return self._composites.__contains__(value)
 
-    def append(self, value):
-        self._composites.append(value)
-        return None
-
-    def extend(self, other):
-        self._composites.extend(other._composites)
-        return None
-
-    def insert(self, key, value):
-        self._composites.insert(key, value)
-        return None
-
-    def remove(self, value):
-        self._composites.remove(value)
-        return None
-
-    def pop(self, key):
-        return self._composites.pop(key)
-
-    def clear(self):
-        self._composites.clear()
-        return None
-
-    def index(self, value):
-        return self._composites.index(value)
-
-    def count(self, value):
-        return self._composites.count(value)
-
-    def sort(self):
-        self._composites.sort()
-        return None
-
-    def reverse(self):
-        self._composites.reverse()
-        return None
-
-    def copy(self):
-        return self._composites.copy()
-
-    def __add__(self, other):
-        return self._composites.__add__(other._composites)
-
-    def __radd__(self, other):
-        return self._composites.__radd__(other._composites)
-
-    def __iadd__(self, other):
-        return self._composites.__iadd__(other._composites)
-
-    def __mul__(self, value):
-        return self._composites.__mull__(value)
-
-    def __rmul__(self, value):
-        return self._composites.__rmul__(value)
-
-    def __imul__(self, value):
-        return self._composites.__imul__(value)
 
 
 if __name__ == "__main__":
 
-    comp = Composite()
+    container = Composite((0,0,0), (10,10,10), (20,20,20))
+    container.add(Composite((5,5,5), (10,10,10), (10,10,10), 9))
+
+    print(container[0,0,0]._position)
